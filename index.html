@@ -165,10 +165,13 @@ body {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(13,10,6,0.95);
+  background: rgba(13,10,6,0.05);
   backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(201,168,76,0.2);
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .nav-inner {
@@ -177,9 +180,40 @@ body {
   gap: 0;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  flex: 1;
 }
 
 .nav-inner::-webkit-scrollbar { display: none; }
+
+.burger-btn {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.9rem 1.2rem;
+}
+
+.burger-btn span {
+  width: 24px;
+  height: 2px;
+  background: var(--gold);
+  transition: all 0.3s;
+  display: block;
+}
+
+.burger-btn.active span:nth-child(1) {
+  transform: rotate(45deg) translate(10px, 10px);
+}
+
+.burger-btn.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.burger-btn.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -7px);
+}
 
 .nav-btn {
   flex-shrink: 0;
@@ -213,6 +247,65 @@ body {
 
 .nav-btn.active::after, .nav-btn:hover::after {
   left: 0; right: 0;
+}
+
+@media (max-width: 768px) {
+  #nav-sticky {
+    position: sticky;
+    height: 52px;
+  }
+
+  body.menu-open {
+    overflow: hidden;
+  }
+
+  .burger-btn {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    right: 1.2rem;
+    transform: translateY(-50%);
+    z-index: 101;
+  }
+
+  .nav-inner {
+    position: fixed;
+    top: 52px;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background: rgba(13,10,6,0.98);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+    flex-wrap: wrap;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+    padding: 0;
+    z-index: 99;
+  }
+
+  .nav-inner.active {
+    max-height: calc(100vh - 52px);
+    overflow-y: auto;
+    transition: max-height 0.3s ease-in;
+  }
+
+  .nav-btn {
+    padding: 0.8rem 1rem;
+    font-size: 0.6rem;
+    flex-basis: 50%;
+    border-right: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .nav-btn:nth-child(odd) {
+    border-right: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .nav-btn:nth-child(even) {
+    border-right: none;
+  }
 }
 
 /* ── SECTION HEADER ── */
@@ -618,7 +711,8 @@ footer {
 @media (max-width: 480px) {
   .menu-grid { gap: 1rem; }
   .dish-img, .dish-img-placeholder { height: 160px; }
-  .nav-btn { padding: 0.9rem 0.9rem; font-size: 0.6rem; }
+  .nav-btn { padding: 0.8rem 0.8rem; font-size: 0.55rem; }
+  .burger-btn { padding: 0.8rem 1rem; }
 }
 </style>
 </head>
@@ -639,13 +733,21 @@ footer {
 
 <!-- STICKY NAV -->
 <nav id="nav-sticky">
-  <div class="nav-inner">
+  <button class="burger-btn" id="burger-menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="nav-inner" id="nav-menu">
     <button class="nav-btn active" onclick="scrollToSection('wazwan')">Wazwan</button>
     <button class="nav-btn" onclick="scrollToSection('starter')">Starters</button>
     <button class="nav-btn" onclick="scrollToSection('maincourse')">Main Course</button>
     <button class="nav-btn" onclick="scrollToSection('tandoori')">Tandoori</button>
     <button class="nav-btn" onclick="scrollToSection('rice')">Rice</button>
     <button class="nav-btn" onclick="scrollToSection('breads')">Breads</button>
+    <button class="nav-btn" onclick="scrollToSection('burger')">Burgers</button>
+    <button class="nav-btn" onclick="scrollToSection('rolls')">Rolls</button>
+    <button class="nav-btn" onclick="scrollToSection('beverages')">Beverages</button>
     <button class="nav-btn" onclick="scrollToSection('story')">Our Story</button>
     <button class="nav-btn" onclick="scrollToSection('info')">Contact</button>
   </div>
@@ -1546,6 +1648,423 @@ footer {
   </div>
 </div>
 
+<!-- ════════════════════════════════ BURGERS ════════════════════════════════ -->
+<div class="menu-separator"><span class="sep-icon">✦</span></div>
+<div class="category-anchor" id="burger"></div>
+<div class="section-header">
+  <span class="section-label">Gourmet Fast Bites</span>
+  <h2 class="section-title">Signature <em>Burgers</em></h2>
+  <div class="section-line"></div>
+  <p class="section-desc">Handcrafted with premium ingredients, our burgers combine Kashmiri spice with modern burger culture.</p>
+</div>
+<div class="menu-section">
+  <div class="menu-grid">
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=80" alt="Wazwan Burger" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🍔</div>
+        <span class="dish-badge">Signature</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Wazwan Burger</p>
+          <p class="dish-price">₹ 340</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">12 min</span></div>
+        <p class="dish-desc">Slow-cooked lamb from our Wazwan collection, layered with saffron aioli, crispy onions &amp; Kashmir's finest paneer on a toasted kulcha bun.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Wazwan Lamb</span><span class="ingredient-tag">Saffron Aioli</span><span class="ingredient-tag">Paneer</span><span class="ingredient-tag">Fried Onions</span><span class="ingredient-tag">Kulcha Bun</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1555939594-58d7cb561039?w=500&q=80" alt="Tandoori Chicken Burger" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🔥</div>
+        <span class="dish-badge">Bestseller</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Tandoori Burger</p>
+          <p class="dish-price">₹ 280</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">10 min</span></div>
+        <p class="dish-desc">Chargrilled tandoori chicken breast with mint-yogurt sauce, cucumber-tomato relish &amp; a touch of Kashmiri chilli on a sesame seed bun.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Tandoori Chicken</span><span class="ingredient-tag">Mint Yogurt</span><span class="ingredient-tag">Cucumber</span><span class="ingredient-tag">Kashmiri Chilli</span><span class="ingredient-tag">Sesame Bun</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1585238341710-4b9c7c7c9e70?w=500&q=80" alt="Mutton Seekh Burger" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🥩</div>
+        <span class="dish-badge">Smoky</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Seekh Burger</p>
+          <p class="dish-price">₹ 300</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">11 min</span></div>
+        <p class="dish-desc">Charcoal-grilled minced mutton seekh with caramelised onions, green chutney &amp; a sharp bite of fresh coriander.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Minced Mutton</span><span class="ingredient-tag">Seekh Spice</span><span class="ingredient-tag">Caramelised Onion</span><span class="ingredient-tag">Green Chutney</span><span class="ingredient-tag">Brioche Bun</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1572802419224-7b1aca0c0989?w=500&q=80" alt="Paneer Tikka Burger" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🧀</div>
+        <span class="dish-badge">Veg</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Paneer Tikka Burger</p>
+          <p class="dish-price">₹ 240</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">9 min</span></div>
+        <p class="dish-desc">Marinated &amp; grilled cottage cheese with crispy lettuce, roasted peppers &amp; tandoori mayo on multigrain bread.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Fresh Paneer</span><span class="ingredient-tag">Tandoori Mayo</span><span class="ingredient-tag">Bell Peppers</span><span class="ingredient-tag">Lettuce</span><span class="ingredient-tag">Multigrain Bun</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1561758033-d89a0ad7b038?w=500&q=80" alt="Chicken Tikka Burger" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🍗</div>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Chicken Tikka Burger</p>
+          <p class="dish-price">₹ 290</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">10 min</span></div>
+        <p class="dish-desc">Chunks of tandoori chicken tikka with butter-cream sauce, pickled onions &amp; a saffron-spiced coleslaw.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Chicken Tikka</span><span class="ingredient-tag">Butter Sauce</span><span class="ingredient-tag">Pickled Onion</span><span class="ingredient-tag">Saffron Slaw</span><span class="ingredient-tag">Brioche Bun</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1590974747462-8dca4231fdf5?w=500&q=80" alt="Spicy Aloo Burger" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🥔</div>
+        <span class="dish-badge">Veg</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Kashmiri Aloo Burger</p>
+          <p class="dish-price">₹ 200</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">8 min</span></div>
+        <p class="dish-desc">Spiced potato patty with fennel seeds, layered with mint chutney, beet pickles &amp; crispy fried shoestring potatoes.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Spiced Potato</span><span class="ingredient-tag">Mint Chutney</span><span class="ingredient-tag">Beet Pickle</span><span class="ingredient-tag">Fried Potatoes</span><span class="ingredient-tag">Whole Wheat Bun</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════ ROLLS ════════════════════════════════ -->
+<div class="menu-separator"><span class="sep-icon">✦</span></div>
+<div class="category-anchor" id="rolls"></div>
+<div class="section-header">
+  <span class="section-label">Wrapped Delights</span>
+  <h2 class="section-title">Grilled <em>Rolls</em></h2>
+  <div class="section-line"></div>
+  <p class="section-desc">Freshly grilled parantha wraps stuffed with succulent fillings — perfect for on-the-go indulgence.</p>
+</div>
+<div class="menu-section">
+  <div class="menu-grid">
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1626082221744-c17e8e50d9d9?w=500&q=80" alt="Chicken Tikka Roll" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🌯</div>
+        <span class="dish-badge">Bestseller</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Chicken Tikka Roll</p>
+          <p class="dish-price">₹ 220</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">8 min</span></div>
+        <p class="dish-desc">Tandoori chicken tikka wrapped in a warm butter-ghee parantha with mint chutney, cucumber &amp; crispy onions.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Chicken Tikka</span><span class="ingredient-tag">Parantha</span><span class="ingredient-tag">Mint Chutney</span><span class="ingredient-tag">Cucumber</span><span class="ingredient-tag">Fried Onions</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1598788657707-8a71bc5be333?w=500&q=80" alt="Seekh Kebab Roll" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🔥</div>
+        <span class="dish-badge">Smoky</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Seekh Kebab Roll</p>
+          <p class="dish-price">₹ 240</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">9 min</span></div>
+        <p class="dish-desc">Charcoal-grilled minced lamb seekh, wrapped with roasted peppers, onions &amp; tangy tamarind chutney.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Seekh Kebab</span><span class="ingredient-tag">Bell Peppers</span><span class="ingredient-tag">Parantha</span><span class="ingredient-tag">Tamarind Chutney</span><span class="ingredient-tag">Ginger</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1599974242254-f76bab4a4c7f?w=500&q=80" alt="Paneer Tikka Roll" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🧀</div>
+        <span class="dish-badge">Veg</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Paneer Tikka Roll</p>
+          <p class="dish-price">₹ 190</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">7 min</span></div>
+        <p class="dish-desc">Grilled marinated paneer cubes with capsicum, spring onion &amp; a drizzle of tandoori mayo in a buttered parantha.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Paneer Tikka</span><span class="ingredient-tag">Capsicum</span><span class="ingredient-tag">Spring Onion</span><span class="ingredient-tag">Tandoori Mayo</span><span class="ingredient-tag">Parantha</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1600534155192-e65411a58d25?w=500&q=80" alt="Mutton Rara Roll" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🥩</div>
+        <span class="dish-badge">Spicy</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Mutton Rara Roll</p>
+          <p class="dish-price">₹ 260</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">10 min</span></div>
+        <p class="dish-desc">Minced &amp; whole mutton cooked in rich spices, wrapped with fried onions &amp; green coriander in a golden parantha.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Mutton Rara</span><span class="ingredient-tag">Fried Onions</span><span class="ingredient-tag">Coriander</span><span class="ingredient-tag">Parantha</span><span class="ingredient-tag">Ghee</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1626082294294-174a92291f79?w=500&q=80" alt="Paneer Chilli Roll" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🌶️</div>
+        <span class="dish-badge">Indo-Chinese</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Paneer Chilli Roll</p>
+          <p class="dish-price">₹ 210</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">8 min</span></div>
+        <p class="dish-desc">Crispy paneer tossed with peppers &amp; onions in a soy-chilli glaze, rolled in a herb-infused parantha.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Paneer</span><span class="ingredient-tag">Bell Peppers</span><span class="ingredient-tag">Soy Sauce</span><span class="ingredient-tag">Green Chilli</span><span class="ingredient-tag">Herb Parantha</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1626082325549-d97da1f44da8?w=500&q=80" alt="Mushroom & Potato Roll" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🍄</div>
+        <span class="dish-badge">Veg</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Mushroom &amp; Aloo Roll</p>
+          <p class="dish-price">₹ 170</p>
+        </div>
+        <div class="dish-meta"><span class="prep-time">7 min</span></div>
+        <p class="dish-desc">Sautéed mushrooms with spiced potatoes, caramelised onions &amp; mint chutney in a warm kasuri methi parantha.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Mushroom</span><span class="ingredient-tag">Potatoes</span><span class="ingredient-tag">Kasuri Methi</span><span class="ingredient-tag">Mint Chutney</span><span class="ingredient-tag">Parantha</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════ BEVERAGES ════════════════════════════════ -->
+<div class="menu-separator"><span class="sep-icon">✦</span></div>
+<div class="category-anchor" id="beverages"></div>
+<div class="section-header">
+  <span class="section-label">Refreshing Sips</span>
+  <h2 class="section-title">Drinks &amp; <em>Beverages</em></h2>
+  <div class="section-line"></div>
+  <p class="section-desc">Handcrafted drinks infused with Kashmiri spices, fresh juices &amp; authentic chai blends.</p>
+</div>
+<div class="menu-section">
+  <div class="menu-grid">
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1585701032434-02d3f0b27e49?w=500&q=80" alt="Kashmiri Chai" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🍵</div>
+        <span class="dish-badge">Signature</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Noon Chai</p>
+        </div>
+        <div class="qty-price-table">
+        <div class="qty-col"><span class="qty-label">Small</span><span class="qty-val">₹ 40</span></div>
+        <div class="qty-col"><span class="qty-label">Medium</span><span class="qty-val">₹ 60</span></div>
+        <div class="qty-col"><span class="qty-label">Large</span><span class="qty-val">₹ 80</span></div>
+      </div>
+        <p class="dish-desc">The iconic pink Kashmiri tea — brewed with saffron, cardamom, and pistachios for a creamy, delicate flavour.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Saffron</span><span class="ingredient-tag">Green Tea</span><span class="ingredient-tag">Cardamom</span><span class="ingredient-tag">Pistachio</span><span class="ingredient-tag">Milk</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1597318901541-a4b4f3e5c7ed?w=500&q=80" alt="Ginger Lemon Tea" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🍋</div>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Ginger Lemon Tea</p>
+        </div>
+        <div class="qty-price-table">
+        <div class="qty-col"><span class="qty-label">Small</span><span class="qty-val">₹ 35</span></div>
+        <div class="qty-col"><span class="qty-label">Medium</span><span class="qty-val">₹ 50</span></div>
+        <div class="qty-col"><span class="qty-label">Large</span><span class="qty-val">₹ 70</span></div>
+      </div>
+        <p class="dish-desc">A warming brew of fresh ginger, lemon &amp; honey — perfectly soothing &amp; energising.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Fresh Ginger</span><span class="ingredient-tag">Lemon</span><span class="ingredient-tag">Honey</span><span class="ingredient-tag">Black Tea</span><span class="ingredient-tag">Mint</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1618040239661-f0bd7318c1b5?w=500&q=80" alt="Saffron Milkshake" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🥛</div>
+        <span class="dish-badge">Creamy</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Saffron Milkshake</p>
+        </div>
+        <div class="qty-price-table">
+        <div class="qty-col"><span class="qty-label">Small</span><span class="qty-val">₹ 80</span></div>
+        <div class="qty-col"><span class="qty-label">Large</span><span class="qty-val">₹ 120</span></div>
+      </div>
+        <p class="dish-desc">Luxurious Kashmiri saffron blended with cold milk, cardamom &amp; almonds — a royal treat.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Saffron</span><span class="ingredient-tag">Fresh Milk</span><span class="ingredient-tag">Almonds</span><span class="ingredient-tag">Cardamom</span><span class="ingredient-tag">Honey</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1600271886742-f049cd1dcf47?w=500&q=80" alt="Pomegranate Juice" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🍎</div>
+        <span class="dish-badge">Fresh</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Pomegranate Juice</p>
+        </div>
+        <div class="qty-price-table">
+        <div class="qty-col"><span class="qty-label">Small</span><span class="qty-val">₹ 60</span></div>
+        <div class="qty-col"><span class="qty-label">Large</span><span class="qty-val">₹ 100</span></div>
+      </div>
+        <p class="dish-desc">Freshly pressed Kashmir pomegranate juice — tart, sweet &amp; bursting with antioxidants.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Fresh Pomegranate</span><span class="ingredient-tag">Lemon</span><span class="ingredient-tag">Mint</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1588176923578-03a82395a3e7?w=500&q=80" alt="Mango Lassi" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🥭</div>
+        <span class="dish-badge">Creamy</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Mango Lassi</p>
+        </div>
+        <div class="qty-price-table">
+        <div class="qty-col"><span class="qty-label">Small</span><span class="qty-val">₹ 70</span></div>
+        <div class="qty-col"><span class="qty-label">Large</span><span class="qty-val">₹ 110</span></div>
+      </div>
+        <p class="dish-desc">Thick, creamy yogurt shake with fresh mango pulp, cardamom &amp; a hint of saffron.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Fresh Mango</span><span class="ingredient-tag">Greek Yogurt</span><span class="ingredient-tag">Cardamom</span><span class="ingredient-tag">Saffron</span><span class="ingredient-tag">Honey</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="dish-card">
+      <div class="dish-img-wrap">
+        <img class="dish-img" src="https://images.unsplash.com/photo-1585936882457-b7fee0d9b56f?w=500&q=80" alt="Iced Kashmiri Chai" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+        <div class="dish-img-placeholder" style="display:none">🧊</div>
+        <span class="dish-badge">Summer</span>
+      </div>
+      <div class="dish-body">
+        <div class="dish-top">
+          <p class="dish-name">Iced Noon Chai</p>
+        </div>
+        <div class="qty-price-table">
+        <div class="qty-col"><span class="qty-label">Small</span><span class="qty-val">₹ 50</span></div>
+        <div class="qty-col"><span class="qty-label">Large</span><span class="qty-val">₹ 90</span></div>
+      </div>
+        <p class="dish-desc">Our signature pink chai served chilled with crushed ice — perfect for warm Kashmir afternoons.</p>
+        <p class="ingredients-label">Key Ingredients</p>
+        <div class="ingredients">
+          <span class="ingredient-tag">Saffron</span><span class="ingredient-tag">Green Tea</span><span class="ingredient-tag">Cardamom</span><span class="ingredient-tag">Pistachio</span><span class="ingredient-tag">Ice</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ════════════════════════════════ STORY ════════════════════════════════ -->
 <div class="menu-separator"><span class="sep-icon">✦</span></div>
 <section id="story">
@@ -1596,8 +2115,36 @@ footer {
 </footer>
 
 <script>
+// Burger menu toggle
+const burgerBtn = document.getElementById('burger-menu');
+const navMenu = document.getElementById('nav-menu');
+
+burgerBtn.addEventListener('click', () => {
+  burgerBtn.classList.toggle('active');
+  navMenu.classList.toggle('active');
+  document.body.classList.toggle('menu-open');
+});
+
+// Close menu when nav item is clicked
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    burgerBtn.classList.remove('active');
+    navMenu.classList.remove('active');
+    document.body.classList.remove('menu-open');
+  });
+});
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+  if (!navMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
+    burgerBtn.classList.remove('active');
+    navMenu.classList.remove('active');
+    document.body.classList.remove('menu-open');
+  }
+});
+
 // Scroll-activated nav highlight
-const sections = ['wazwan','starter','maincourse','tandoori','rice','breads','story','info'];
+const sections = ['wazwan','starter','maincourse','tandoori','rice','breads','burger','rolls','beverages','story','info'];
 const navBtns = document.querySelectorAll('.nav-btn');
 
 function updateNav() {
