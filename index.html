@@ -167,23 +167,40 @@ body {
   z-index: 100;
   background: rgba(13,10,6,0.05);
   backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(201,168,76,0.2);
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: auto;
 }
 
 .nav-inner {
   display: flex;
   overflow-x: auto;
   gap: 0;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-width: thin;
+  -ms-overflow-style: auto;
   flex: 1;
+  scrollbar-color: var(--gold) transparent;
+  border-bottom: 1px solid rgba(201,168,76,0.2);
 }
 
-.nav-inner::-webkit-scrollbar { display: none; }
+.nav-inner::-webkit-scrollbar {
+  height: 4px;
+}
+
+.nav-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.nav-inner::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 2px;
+}
+
+.nav-inner::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-light);
+}
 
 .burger-btn {
   display: none;
@@ -253,6 +270,7 @@ body {
   #nav-sticky {
     position: sticky;
     height: 52px;
+    padding-right: 52px;
   }
 
   body.menu-open {
@@ -261,14 +279,62 @@ body {
 
   .burger-btn {
     display: flex;
-    position: absolute;
-    top: 50%;
-    right: 1.2rem;
-    transform: translateY(-50%);
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 52px;
+    height: 52px;
+    align-items: center;
+    justify-content: center;
     z-index: 101;
+    background: rgba(13,10,6,0.05);
+    backdrop-filter: blur(16px);
+    border-left: 1px solid rgba(201,168,76,0.2);
+    flex-direction: column;
+    gap: 5px;
   }
 
   .nav-inner {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    flex: 1;
+    height: 52px;
+  }
+
+  .nav-inner::-webkit-scrollbar {
+    height: 4px;
+    display: none;
+  }
+
+  .nav-inner:hover::-webkit-scrollbar {
+    display: block;
+  }
+
+  .nav-inner::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .nav-inner::-webkit-scrollbar-thumb {
+    background: var(--gold);
+    border-radius: 2px;
+  }
+
+  .nav-inner::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-light);
+  }
+
+  .nav-btn {
+    flex-shrink: 0;
+    padding: 0.8rem 1rem;
+    font-size: 0.6rem;
+    white-space: nowrap;
+  }
+
+  .nav-dropdown {
     position: fixed;
     top: 52px;
     left: 0;
@@ -277,7 +343,9 @@ body {
     background: rgba(13,10,6,0.98);
     backdrop-filter: blur(16px);
     border-bottom: 1px solid rgba(201,168,76,0.2);
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out;
@@ -285,25 +353,24 @@ body {
     z-index: 99;
   }
 
-  .nav-inner.active {
+  .nav-dropdown.active {
     max-height: calc(100vh - 52px);
     overflow-y: auto;
     transition: max-height 0.3s ease-in;
   }
 
-  .nav-btn {
+  .nav-dropdown .nav-btn {
     padding: 0.8rem 1rem;
     font-size: 0.6rem;
-    flex-basis: 50%;
     border-right: 1px solid rgba(201,168,76,0.1);
     border-bottom: 1px solid rgba(201,168,76,0.1);
   }
 
-  .nav-btn:nth-child(odd) {
+  .nav-dropdown .nav-btn:nth-child(odd) {
     border-right: 1px solid rgba(201,168,76,0.1);
   }
 
-  .nav-btn:nth-child(even) {
+  .nav-dropdown .nav-btn:nth-child(even) {
     border-right: none;
   }
 }
@@ -733,13 +800,26 @@ footer {
 
 <!-- STICKY NAV -->
 <nav id="nav-sticky">
+  <div class="nav-inner" id="nav-menu">
+    <button class="nav-btn active" onclick="scrollToSection('wazwan')">Wazwan</button>
+    <button class="nav-btn" onclick="scrollToSection('starter')">Starters</button>
+    <button class="nav-btn" onclick="scrollToSection('maincourse')">Main Course</button>
+    <button class="nav-btn" onclick="scrollToSection('tandoori')">Tandoori</button>
+    <button class="nav-btn" onclick="scrollToSection('rice')">Rice</button>
+    <button class="nav-btn" onclick="scrollToSection('breads')">Breads</button>
+    <button class="nav-btn" onclick="scrollToSection('burger')">Burgers</button>
+    <button class="nav-btn" onclick="scrollToSection('rolls')">Rolls</button>
+    <button class="nav-btn" onclick="scrollToSection('beverages')">Beverages</button>
+    <button class="nav-btn" onclick="scrollToSection('story')">Our Story</button>
+    <button class="nav-btn" onclick="scrollToSection('info')">Contact</button>
+  </div>
   <button class="burger-btn" id="burger-menu">
     <span></span>
     <span></span>
     <span></span>
   </button>
-  <div class="nav-inner" id="nav-menu">
-    <button class="nav-btn active" onclick="scrollToSection('wazwan')">Wazwan</button>
+  <div class="nav-dropdown" id="nav-dropdown">
+    <button class="nav-btn" onclick="scrollToSection('wazwan')">Wazwan</button>
     <button class="nav-btn" onclick="scrollToSection('starter')">Starters</button>
     <button class="nav-btn" onclick="scrollToSection('maincourse')">Main Course</button>
     <button class="nav-btn" onclick="scrollToSection('tandoori')">Tandoori</button>
@@ -2117,11 +2197,11 @@ footer {
 <script>
 // Burger menu toggle
 const burgerBtn = document.getElementById('burger-menu');
-const navMenu = document.getElementById('nav-menu');
+const navDropdown = document.getElementById('nav-dropdown');
 
 burgerBtn.addEventListener('click', () => {
   burgerBtn.classList.toggle('active');
-  navMenu.classList.toggle('active');
+  navDropdown.classList.toggle('active');
   document.body.classList.toggle('menu-open');
 });
 
@@ -2129,16 +2209,16 @@ burgerBtn.addEventListener('click', () => {
 document.querySelectorAll('.nav-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     burgerBtn.classList.remove('active');
-    navMenu.classList.remove('active');
+    navDropdown.classList.remove('active');
     document.body.classList.remove('menu-open');
   });
 });
 
 // Close menu when clicking outside
 document.addEventListener('click', (e) => {
-  if (!navMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
+  if (!navDropdown.contains(e.target) && !burgerBtn.contains(e.target)) {
     burgerBtn.classList.remove('active');
-    navMenu.classList.remove('active');
+    navDropdown.classList.remove('active');
     document.body.classList.remove('menu-open');
   }
 });
